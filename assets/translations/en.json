@@ -1,0 +1,19 @@
+{
+    "welcome_title": "Welcome to UpTodo",
+    "welcome_description": "Please login or register to continue",
+    "create_category_page_title": "Create category",
+    "create_category_form_category_name_label": "Category name:",
+    "create_category_form_category_name_placeholder": "Category",
+    "create_category_form_category_icon_label": "Icon:",
+    "create_category_form_category_icon_Placeholder": "Choose icon from library",
+    "create_category_form_category_background_color_label": "Background color:",
+    "create_category_form_category_icon_text_color_label": "Category icon & text color:",
+    "create_category_form_category_preview_label": "Preview:",
+    "create_category_create_button": "Create",
+    "create_category_form_category_color_label": "Category color:",
+    "common_cancel": "Cancel",
+    "create_task_name_label": "Task name:",
+    "create_task_name_place": "Task name",
+    "create_task_description_label": "Task description:",
+    "create_task_description_place": "Task description"
+}
