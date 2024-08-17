@@ -10,8 +10,8 @@ import 'package:todo_list_app/entities/category_realm_entity.dart';
 import 'package:todo_list_app/utils/enum/color_extension.dart';
 
 class CreateOrEditCategory extends StatefulWidget {
-  const CreateOrEditCategory({super.key});
-
+  CreateOrEditCategory({super.key, this.categoryId});
+  String? categoryId;
   @override
   State<CreateOrEditCategory> createState() => _CreateOrEditCategoryState();
 }
@@ -22,20 +22,22 @@ class _CreateOrEditCategoryState extends State<CreateOrEditCategory> {
   Color _colorSelected = const Color(0xFFC9CC41);
   Color _iconTextColorSelected = const Color(0xFF41CCA7);
   IconData? _iconSelected;
+
+  bool get isEdit {
+    return widget.categoryId != null;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    _colorDataSource.addAll([
-      const Color(0xFFC9CC41),
-      const Color(0xFF66CC41),
-      const Color(0xFF41CCA7),
-      const Color(0xFF4181CC),
-      const Color(0xFF41A2CC),
-      const Color(0xFFCC8441),
-      const Color(0xFF9741CC),
-      const Color(0xFFCC4173),
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (isEdit) {
+          _findCategoryById(widget.categoryId!);
+        }
+      },
+    );
   }
 
   @override
@@ -44,7 +46,9 @@ class _CreateOrEditCategoryState extends State<CreateOrEditCategory> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF121212),
         title: Text(
-          "create_category_page_title".tr(),
+          isEdit
+              ? "edit_category_page_title".tr()
+              : "create_category_page_title".tr(),
           style: const TextStyle(
               fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -312,7 +316,7 @@ class _CreateOrEditCategoryState extends State<CreateOrEditCategory> {
           const Spacer(),
           ElevatedButton(
             onPressed: () {
-              _onHandleCreateCategory();
+              isEdit ? _editCategory() : _onHandleCreateCategory();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF8875FF),
@@ -321,7 +325,9 @@ class _CreateOrEditCategoryState extends State<CreateOrEditCategory> {
               ),
             ),
             child: Text(
-              "create_category_create_button".tr(),
+              isEdit
+                  ? "edit_category_edit_button"
+                  : "create_category_create_button".tr(),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -459,8 +465,8 @@ class _CreateOrEditCategoryState extends State<CreateOrEditCategory> {
     );
   }
 
-  void _showAlert(String title, String message) {
-    showDialog(
+  Future<void> _showAlert(String title, String message) async {
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -477,5 +483,68 @@ class _CreateOrEditCategoryState extends State<CreateOrEditCategory> {
         );
       },
     );
+  }
+
+  void _findCategoryById(String categoryId) async {
+    var config = Configuration.local([CategoryRealmEntity.schema]);
+    var realm = Realm(config);
+    var category =
+        realm.find<CategoryRealmEntity>(ObjectId.fromHexString(categoryId));
+    if (category != null) {
+      _nameCategoryTextController.text = category.name;
+      if (category.iconCodePoint != null) {
+        _iconSelected = IconData(
+          category.iconCodePoint!,
+          fontFamily: 'MaterialIcons',
+        );
+      }
+      if (category.backgroundColorHex != null) {
+        _colorSelected = HexColor(category.backgroundColorHex!);
+      }
+      if (category.iconColorHex != null) {
+        _iconTextColorSelected = HexColor(category.iconColorHex!);
+      }
+
+      setState(() {});
+    } else {
+      _showAlert("Error", "Category not found");
+      return;
+    }
+  }
+
+  Future<void> _editCategory() async {
+    try {
+      final name = _nameCategoryTextController.text;
+      if (name.isEmpty || _iconSelected == null) {
+        _showAlert("Error", "Please fill all fields");
+        return;
+      }
+      final backgroundColorHex = _colorSelected.toHex();
+      var config = Configuration.local([CategoryRealmEntity.schema]);
+      var realm = Realm(config);
+      var category = CategoryRealmEntity(
+        ObjectId.fromHexString(widget.categoryId!),
+        name,
+        backgroundColorHex: backgroundColorHex,
+        iconCodePoint: _iconSelected?.codePoint,
+        iconColorHex: _iconTextColorSelected.toHex(),
+      );
+
+      await realm.writeAsync(() {
+        realm.add(category, update: true);
+      });
+      // save data into local storage
+      // refresh data
+
+      _nameCategoryTextController.clear();
+      setState() {}
+      await _showAlert("Success", "Edit category successfully");
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print(e);
+      _showAlert("Error", "Edit category failed");
+    }
   }
 }

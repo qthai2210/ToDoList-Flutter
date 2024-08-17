@@ -15,5 +15,16 @@
     "create_task_name_label": "Tên công việc",
     "create_task_name_place": "Tên công việc",
     "create_task_description_label": "Mô tả công việc",
-    "create_task_description_place": "Mô tả công việc"
+    "create_task_description_place": "Mô tả công việc",
+    "category_list_page_title": "Danh sách danh mục",
+    "category_list_edit_category_button": "Chỉnh sửa",
+    "add_category_create_button": "Thêm danh mục",
+    "common_done": "Hoàn tất",
+    "edit_category_page_title": "Chỉnh sửa danh mục",
+    "edit_category_edit_button": "Chỉnh sửa",
+    "task_time_label": "Thời gian: ",
+    "edit_task_priority_label": "Độ ưu tiên: ",
+    "common_save": "Lưu",
+    "task_priority_label": "Độ ưu tiên: ",
+    "task_category_label": "Danh mục: "
 }

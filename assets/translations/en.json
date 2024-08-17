@@ -15,5 +15,16 @@
     "create_task_name_label": "Task name:",
     "create_task_name_place": "Task name",
     "create_task_description_label": "Task description:",
-    "create_task_description_place": "Task description"
+    "create_task_description_place": "Task description",
+    "category_list_page_title": "Category list",
+    "category_list_edit_category_button": "Edit",
+    "add_category_create_button": "Add category",
+    "common_done": "Done",
+    "edit_category_page_title": "Edit category",
+    "edit_category_edit_button": "Edit",
+    "task_time_label": "Time:",
+    "edit_task_priority_label": "Priority: ",
+    "common_save": "Save",
+    "task_priority_label": "Priority: ",
+    "task_category_label": "Priority: "
 }
