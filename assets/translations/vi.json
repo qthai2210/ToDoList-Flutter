@@ -26,5 +26,16 @@
     "edit_task_priority_label": "Độ ưu tiên: ",
     "common_save": "Lưu",
     "task_priority_label": "Độ ưu tiên: ",
-    "task_category_label": "Danh mục: "
+    "task_category_label": "Danh mục: ",
+    "User_name_label": "Tên",
+    "User_name_hint": "Nhập tên của bạn",
+    "password_label": "Mật khẩu ",
+    "password_label_hint": "Nhập mật khẩu của bạn",
+    "confirm_password_label": "Xác nhận mật khẩu: ",
+    "confirm_password_hint": "Xác nhận mật khẩu của bạn",
+    "User_name_required": "Tên là bắt buộc",
+    "password_required": "Mật khẩu là bắt buộc",
+    "confirm_password_required": "Xác nhận mật khẩu là bắt buộc",
+    "email_required": "Email là bắt buộc",
+    "email_invalid": "Email không hợp lệ"
 }
