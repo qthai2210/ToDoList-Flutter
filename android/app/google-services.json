@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015868760588",
+    "project_id": "learn-todo-app-404b7",
+    "storage_bucket": "learn-todo-app-404b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015868760588:android:eedae24bf7d850a291c429",
+        "android_client_info": {
+          "package_name": "com.example.todo_list_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPM_Mem_zxUxj-EHAP6DD6E-7uqRuEjsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

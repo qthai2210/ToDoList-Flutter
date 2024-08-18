@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list_app/ui/task/create_task.dart';
 
@@ -36,6 +38,19 @@ class _MainPageState extends State<MainPage> {
       ),
       Container(
         color: Colors.purple,
+        child: SafeArea(
+          child: TextButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: const Text(
+              'Sign out',
+              style: TextStyle(
+                color: Colors.amber,
+              ),
+            ),
+          ),
+        ),
       ),
     ];
   }

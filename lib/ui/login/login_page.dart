@@ -3,6 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_app/domains/authentication_repository/authentication_repository.dart';
+import 'package:todo_list_app/domains/authentication_repository/authentication_repository.dart';
+import 'package:todo_list_app/domains/authentication_repository/authentication_repository.dart';
 import 'package:todo_list_app/ui/login/bloc/cubit/login_cubit_cubit.dart';
 import 'package:todo_list_app/ui/register/register_page.dart';
 
@@ -30,7 +33,12 @@ class LoginPage extends StatelessWidget {
       ),
       body: SafeArea(
           child: BlocProvider(
-        create: (context) => LoginCubitCubit(),
+        create: (context) {
+          final authenticationRepository =
+              context.read<AuthenticationRepository>();
+          return LoginCubitCubit(
+              authenticationRepository: authenticationRepository);
+        },
         child: const LoginView(),
       )),
     );
@@ -47,8 +55,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   var _autoValidate = AutovalidateMode.disabled;
-  var _emailTextController = TextEditingController();
-  var _passwordTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(

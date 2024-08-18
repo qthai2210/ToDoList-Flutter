@@ -2,7 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_app/domains/authentication_repository/authentication_repository.dart';
 import 'package:todo_list_app/ui/login/login_page.dart';
+import 'package:todo_list_app/ui/register/cubit/register_cubit.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -26,7 +29,33 @@ class RegisterPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: BlocProvider(
+          create: (BuildContext context) {
+            final AuthenticationRepository authenticationRepository =
+                context.read<AuthenticationRepository>();
+            return RegisterCubit(
+                authenticationRepository:
+                    context.read<AuthenticationRepository>());
+          },
+          child: const RegisterView()),
+    );
+  }
+}
+
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -72,7 +101,7 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 20),
             _buildPasswordField(),
             _buildConfirmPasswordField(),
-            _buildLoginButton(),
+            _buildRegisterButton(),
             _buildOrSplitDivider(),
             _buildSocialRegister(),
             _buildHaveAccount(context),
@@ -97,6 +126,7 @@ class RegisterPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: _emailController,
           decoration: InputDecoration(
             hintText: "User_name_hint".tr(),
             hintStyle: const TextStyle(
@@ -137,6 +167,7 @@ class RegisterPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: _passwordController,
           decoration: InputDecoration(
             hintText: "password_label_hint".tr(),
             hintStyle: const TextStyle(
@@ -204,13 +235,16 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildRegisterButton() {
     return Container(
       height: 48,
       margin: const EdgeInsets.only(top: 70),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          _onTapRegister();
+          //_onTapRegister;
+        },
         style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF8875FF),
             shape: RoundedRectangleBorder(
@@ -218,7 +252,7 @@ class RegisterPage extends StatelessWidget {
             ),
             disabledBackgroundColor: const Color(0xff8687E7).withOpacity(0.5)),
         child: const Text(
-          'Login',
+          'Register',
           style:
               TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Lato'),
         ),
@@ -364,6 +398,7 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
+
   //   return Container(
   //     margin: const EdgeInsets.only(top: 20),
   //     child: Row(
@@ -392,4 +427,10 @@ class RegisterPage extends StatelessWidget {
   //     ),
   //   );
   // }
+  void _onTapRegister() {
+    print('Register');
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    context.read<RegisterCubit>().register(email, password);
+  }
 }
